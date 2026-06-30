@@ -1,29 +1,1606 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>TraceBoard Suite</title>
-  <meta name="description" content="Lightweight requirements and traceability management for modern teams.">
-  <style>
-    body { font-family: Arial; margin: 60px; max-width: 800px; }
-    h1 { font-size: 42px; }
-    .cta { margin-top: 30px; padding: 12px 20px; background: black; color: white; display: inline-block; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TraceBoard Suite — Self‑hosted traceability, documents & test execution for engineering teams</title>
+<meta name="description" content="TraceBoard Suite combines requirements traceability, document generation, and test execution in a single self‑hosted platform. Built for engineering teams that need audit‑ready evidence." />
+<link rel="icon" type="image/png" href="traceboard.png">
+<style>
+  :root{
+    --paper:#f7f7f4;
+    --paper-raised:#ffffff;
+    --ink:#1c2541;
+    --slate:#4f5e6d;
+    --slate-light:#8b97a3;
+    --blue:#2e5fa3;
+    --blue-dark:#1f3f6e;
+    --hairline:#dde2e6;
+    --hairline-strong:#b9c2ca;
+    --amber:#e8833a;
+    --green:#059669;
+    --red:#dc2626;
+    --max-width:1120px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+
+  a{ color:inherit; }
+  button{ font-family:inherit; }
+
+  button:focus-visible, a:focus-visible, summary:focus-visible{
+    outline:2px solid var(--blue);
+    outline-offset:2px;
+  }
+
+  /* ---------- Nav ---------- */
+  .nav{
+	height:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 24px;
+    border-bottom:1px solid var(--hairline);
+  }
+  .logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  }
+
+   .logo img{
+	  height:52px;
+	  width:auto;
+	  display:block;
+	}
+
+	.brand-name{
+	  font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+	  font-weight:700;
+	  font-size:22px;
+	  color:var(--ink);
+	  letter-spacing:0.2px;
+	}
+  .nav-links{ display:flex; align-items:center; gap:28px; font-size:14px; }
+  .nav-links a{ color:var(--slate); text-decoration:none; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-cta{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    padding:8px 16px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    text-decoration:none;
+  }
+
+  /* ---------- Shared bits ---------- */
+  .section-eyebrow{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin:0 0 12px;
+  }
+  .btn{
+    display:inline-block;
+    text-align:center;
+    padding:12px 24px;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:14px;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    color:var(--ink);
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover{ background:var(--ink); color:var(--paper); }
+  .btn-primary{
+    background:var(--blue);
+    border-color:var(--blue);
+    color:#fff;
+  }
+  .btn-primary:hover{ background:var(--blue-dark); border-color:var(--blue-dark); color:#fff; }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    padding:72px 24px 80px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(28,37,65,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,37,65,0.06) 1px, transparent 1px);
+    background-size:32px 32px;
+    -webkit-mask-image:radial-gradient(ellipse 65% 70% at 30% 35%, black 0%, transparent 75%);
+    mask-image:radial-gradient(ellipse 65% 70% at 30% 35%, black 0%, transparent 75%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    gap:56px;
+    align-items:center;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .hero-grid .eyebrow{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin:0 0 18px;
+  }
+  .hero-grid h1{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:800;
+    font-size:clamp(32px, 4.5vw, 50px);
+    line-height:1.15;
+    margin:0 0 20px;
+  }
+  .hero-grid .lead{
+    font-size:17px;
+    color:var(--slate);
+    max-width:520px;
+    margin:0 0 32px;
+  }
+  .cta-row{ display:flex; gap:16px; flex-wrap:wrap; }
+
+  .hero-visual{ width:100%; }
+  .hero-visual svg{ width:100%; height:auto; display:block; }
+
+  /* ---------- Who uses ---------- */
+  .who-uses{ padding:64px 24px; border-top:1px solid var(--hairline); background:var(--paper-raised); }
+  .who-uses-head{ max-width:640px; margin:0 auto 48px; text-align:center; }
+  .who-uses-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .who-uses-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:32px;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .who-card{
+    background:var(--paper);
+    border:1px solid var(--hairline);
+    padding:28px 24px;
+  }
+  .who-card h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .who-card p{
+    color:var(--slate);
+    font-size:14px;
+    margin:0;
+  }
+
+  /* ---------- How It Works ---------- */
+  .how-it-works{ padding:72px 24px; border-top:1px solid var(--hairline); }
+  .how-it-works-head{ max-width:700px; margin:0 auto 48px; text-align:center; }
+  .how-it-works-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .how-it-works-head p{ color:var(--slate); margin:0; }
+  .how-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:40px;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .how-step{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .how-step .step-number{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+  }
+  .how-step h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin:0;
+  }
+  .how-step p{
+    color:var(--slate);
+    font-size:14px;
+    margin:0;
+  }
+  .how-step img{
+    width:100%;
+    border:1px solid var(--hairline);
+    border-radius:4px;
+    display:block;
+  }
+
+  /* ---------- Capabilities (pillars) ---------- */
+  .capabilities{ padding:72px 24px; border-top:1px solid var(--hairline); background:var(--paper-raised); }
+  .capabilities-head{ max-width:640px; margin:0 auto 48px; text-align:center; }
+  .capabilities-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .capabilities-head p{ color:var(--slate); margin:0; }
+  .pillars-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:40px;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .pillar-icon{ width:34px; height:34px; color:var(--blue); margin-bottom:18px; }
+  .pillar h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin:0 0 8px;
+  }
+  .pillar p{ color:var(--slate); font-size:14px; margin:0; }
+
+  /* ---------- Comparison Section ---------- */
+  .comparison{ padding:72px 24px; }
+  .comparison-head{ max-width:700px; margin:0 auto 48px; text-align:center; }
+  .comparison-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .comparison-head p{ color:var(--slate); margin:0; }
+
+   .compare-table-wrap{
+	  overflow-x:auto;
+	  max-width:var(--max-width);
+	  margin:0 auto;
+	  border:1px solid var(--hairline);
+	}
+
+	.compare-table{
+	  width:100%;
+	  border-collapse:collapse;
+	  background:var(--paper-raised);
+	  font-size:14px;
+	  table-layout:fixed;
+	}
+
+	.compare-table thead{
+	  background:#f1f5f9;
+	}
+
+	.compare-table thead th{
+	  text-align:left;
+	  padding:14px 18px;
+	  font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+	  font-weight:600;
+	  font-size:11px;
+	  letter-spacing:0.05em;
+	  text-transform:uppercase;
+	  color:var(--slate);
+	  border-bottom:2px solid var(--hairline-strong);
+	}
+
+	.compare-table tbody td{
+	  padding:14px 18px;
+	  border-bottom:1px solid var(--hairline);
+	  vertical-align:middle;
+	}
+	.compare-table tbody tr:last-child td{ border-bottom:none; }
+
+	/* stable row layout */
+	.compare-cell{
+	  display:flex;
+	  align-items:center;
+	  gap:10px;
+	  min-height:24px;
+	}
+
+	/* icon system */
+	.icon{
+	  width:16px;
+	  height:16px;
+	  flex:0 0 16px;
+	}
+
+	.icon.ok{ color:var(--green); }
+	.icon.no{ color:var(--red); }
+	.icon.warn{ color:var(--amber); }
+
+	/* status text styles */
+	.status{
+	  font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+	  font-size:13px;
+	  line-height:1.2;
+	}
+
+	.status.muted{ color:var(--slate); }
+	.status.primary{ color:var(--blue); font-weight:600; }
+
+  /* TraceBoard Suite column emphasis */
+  .col-tb .status{
+    color:var(--blue);
+    font-weight:600;
+  }
+
+  .badge-green{
+    display:inline-block;
+    vertical-align:middle;
+    background:#ecfdf5;
+    color:var(--green);
+    font-weight:600;
+    border-radius:4px;
+    padding:2px 8px;
+    font-size:13px;
+  }
+  .cross{ color:var(--red); vertical-align:middle; }
+  .col-cap{ font-weight:600; color:var(--ink); }
+
+  /* replace cards */
+  .replaces-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+    max-width:var(--max-width);
+    margin:32px auto 0;
+  }
+  .replace-card{
+    position:relative;
+    background:var(--paper-raised);
+    border:1px solid var(--hairline);
+    padding:24px;
+  }
+  .replace-card::before, .replace-card::after{
+    content:'+';
+    position:absolute;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:16px;
+    line-height:1;
+    color:var(--hairline-strong);
+  }
+  .replace-card::before{ top:-8px; left:-8px; }
+  .replace-card::after{ bottom:-8px; right:-8px; }
+  .replace-card h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:17px;
+    margin:0 0 8px;
+  }
+  .replace-card .from{
+    color:var(--red);
+    text-decoration:line-through;
+    font-weight:500;
+  }
+  .replace-card p{
+    color:var(--slate);
+    font-size:14px;
+    margin:0;
+  }
+
+  /* ---------- Deployment ---------- */
+  .deploy{ padding:72px 24px; border-top:1px solid var(--hairline); background:var(--paper-raised); }
+  .deploy-head{ max-width:640px; margin:0 auto 48px; text-align:center; }
+  .deploy-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .deploy-head p{ color:var(--slate); margin:0; }
+  .deploy-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:24px;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .deploy-card{
+    position:relative;
+    background:var(--paper-raised);
+    border:1px solid var(--hairline);
+    padding:28px 24px;
+  }
+  .deploy-card::before, .deploy-card::after{
+    content:'+';
+    position:absolute;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:16px;
+    line-height:1;
+    color:var(--hairline-strong);
+  }
+  .deploy-card::before{ top:-8px; left:-8px; }
+  .deploy-card::after{ bottom:-8px; right:-8px; }
+  .deploy-card h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin:0 0 10px;
+  }
+  .deploy-card p{ color:var(--slate); font-size:14px; margin:0 0 18px; }
+  .deploy-link{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--blue);
+    text-decoration:none;
+  }
+  .deploy-link:hover{ text-decoration:underline; }
+
+  /* ---------- Pricing ---------- */
+  .pricing{ padding:72px 24px; }
+  .pricing-head{ max-width:660px; margin:0 auto 48px; text-align:center; }
+  .pricing-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .pricing-head p{ color:var(--slate); margin:0; }
+
+  .toggle{
+    position:relative; z-index:1;
+    display:inline-flex;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:14px;
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .toggle button{
+    border:none;
+    background:transparent;
+    padding:10px 28px;
+    cursor:pointer;
+    color:var(--ink);
+    font-size:inherit;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .toggle button[aria-pressed="true"]{
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .toggle button:not(:last-child){
+    border-right:1px solid var(--ink);
+  }
+  .pricing-toggle-row{ text-align:center; }
+  .mode-note{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--slate);
+    text-align:center;
+    max-width:520px;
+    margin:0 auto 32px;
+  }
+  .mode-note[hidden]{ display:none; }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:24px;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .cards-grid[hidden]{ display:none; }
+
+  .card{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    background:var(--paper-raised);
+    border:1px solid var(--hairline);
+    padding:28px 22px;
+  }
+  .card::before, .card::after{
+    content:'+';
+    position:absolute;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:16px;
+    line-height:1;
+    color:var(--hairline-strong);
+  }
+  .card::before{ top:-8px; left:-8px; }
+  .card::after{ bottom:-8px; right:-8px; }
+  .card.featured{ border-color:var(--blue); }
+  .card.featured::before, .card.featured::after{ color:var(--blue); }
+
+  .tier-code{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    color:var(--slate);
+    margin:0 0 10px;
+  }
+  .tier-tag{
+    display:inline-block;
+    align-self:flex-start;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--amber);
+    border:1px solid var(--amber);
+    padding:2px 8px;
+    margin:0 0 12px;
+  }
+  .tier-availability{
+    display:inline-block;
+    align-self:flex-start;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--slate-light);
+    border:1px solid var(--hairline-strong);
+    padding:2px 8px;
+    margin:0 0 12px;
+  }
+  .tier-name{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:20px;
+    margin:0 0 14px;
+  }
+  .tier-price{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-weight:600;
+    font-size:30px;
+    margin:0;
+  }
+  .tier-price .unit{
+    font-size:14px;
+    font-weight:400;
+    color:var(--slate);
+  }
+  .tier-sub{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    color:var(--slate);
+    margin:6px 0 16px;
+  }
+  .tier-desc{
+    font-size:14px;
+    color:var(--slate);
+    margin:0 0 18px;
+    flex-grow:1;
+  }
+  .tier-include{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    color:var(--slate);
+    padding-top:14px;
+    border-top:1px solid var(--hairline);
+    margin:0 0 20px;
+  }
+
+  /* ---------- Feature list ---------- */
+  .features{ padding:64px 24px; border-top:1px solid var(--hairline); background:var(--paper-raised); }
+  .features-head{ text-align:center; max-width:600px; margin:0 auto 48px; }
+  .features-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .features-head p{ color:var(--slate); margin:0; }
+  .features-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px 40px;
+    max-width:var(--max-width);
+    margin:0 auto;
+  }
+  .feature-item{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    font-size:14px;
+  }
+  .feature-item svg{ flex-shrink:0; margin-top:2px; color:var(--blue); }
+
+  /* ---------- Bottom line ---------- */
+  .bottom-line-section{ padding:72px 24px; }
+  .bottom-line-card{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper-raised);
+    border:1px solid var(--hairline);
+    border-left:4px solid var(--blue);
+    padding:36px 40px;
+  }
+  .bottom-line-card h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(20px, 2.5vw, 26px);
+    margin:0 0 16px;
+  }
+  .bottom-line-card p{
+    color:var(--slate);
+    font-size:15px;
+    margin:0 0 8px;
+  }
+  .bottom-line-card p:last-child{ margin-bottom:0; }
+
+  /* ---------- FAQ ---------- */
+  .faq{ padding:64px 24px; max-width:720px; margin:0 auto; border-top:1px solid var(--hairline); }
+  .faq h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 28px;
+    text-align:center;
+  }
+  details{
+    border-bottom:1px solid var(--hairline);
+    padding:18px 0;
+  }
+  details:first-of-type{ border-top:1px solid var(--hairline); }
+  summary{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:16px;
+    cursor:pointer;
+    list-style:none;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+  }
+  summary::-webkit-details-marker{ display:none; }
+  summary::after{
+    content:'+';
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:18px;
+    color:var(--blue);
+    flex-shrink:0;
+  }
+  details[open] summary::after{ content:'–'; }
+  details p{
+    color:var(--slate);
+    font-size:14px;
+    margin:12px 0 0;
+    line-height:1.6;
+  }
+
+  /* ---------- Final CTA ---------- */
+  .final-cta{
+    text-align:center;
+    padding:80px 24px;
+    border-top:1px solid var(--hairline);
+  }
+  .final-cta h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(28px, 4vw, 40px);
+    margin:0 0 12px;
+  }
+  .final-cta p{
+    color:var(--slate);
+    margin:0 0 32px;
+    max-width:480px;
+    margin-left:auto;
+    margin-right:auto;
+  }
+  .cta-buttons{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
+  .cta-buttons .btn{ padding:14px 28px; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--hairline);
+    padding:32px 24px;
+    text-align:center;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--slate);
+  }
+  footer a{ text-decoration:none; color:var(--slate); }
+  footer a:hover{ color:var(--ink); }
+  .footer-links{ margin-top:8px; }
+  .footer-links a:not(:last-child)::after{ content:'·'; margin:0 10px; color:var(--hairline-strong); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .hero-grid{ grid-template-columns:1fr; text-align:left; }
+    .hero-visual{ order:2; max-width:480px; margin:0 auto; }
+    .pillars-grid{ grid-template-columns:1fr; gap:32px; }
+    .how-grid{ grid-template-columns:1fr; gap:32px; }
+    .cards-grid{ grid-template-columns:repeat(2, 1fr); }
+    .features-grid{ grid-template-columns:repeat(2, 1fr); }
+    .who-uses-grid{ grid-template-columns:1fr; }
+    .replaces-grid{ grid-template-columns:1fr; }
+    .deploy-grid{ grid-template-columns:1fr; }
+  }
+  @media (max-width:640px){
+    .nav-links{ display:none; }
+    .cards-grid{ grid-template-columns:1fr; }
+    .features-grid{ grid-template-columns:1fr; }
+    .cta-row{ justify-content:flex-start; }
+    .cta-buttons{ flex-direction:column; align-items:center; }
+    .cta-buttons .btn{ width:100%; max-width:280px; }
+    .compare-table-wrap{ font-size:12px; }
+    .compare-table thead th, .compare-table tbody td{ padding:10px 12px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; scroll-behavior:auto !important; }
+  }
+</style>
 </head>
 <body>
 
-<h1>TraceBoard Suite</h1>
+<nav class="nav">
+  <a class="logo" href="/">
+  <img src="traceboard.png" alt="TraceBoard" style="height: 40px; width: auto; display: block;">
+  <span class="brand-name">TraceBoard</span>
+  </a>
+  <div class="nav-links">
+    <a href="#how-it-works">How it works</a>
+    <a href="#capabilities">Features</a>
+    <a href="#comparison">Compare</a>
+    <a href="#deployment">Deployment</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+  </div>
+</nav>
 
-<p>
-A lightweight, opinionated system for requirements, traceability, and structured engineering workflows.
-</p>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HERO                                            -->
+<!-- ═══════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <p class="eyebrow">Requirements, Documents, and Tests — one self-hosted suite</p>
 
-<p>
-Built for teams who want clarity instead of complexity.
-</p>
+		<h1>
+		Traceability, documents, and test execution — all in one suite.
+		</h1>
 
-<a class="cta" href="mailto:sales@traceboardsuite.com">
-Contact Sales
-</a>
+		<p class="lead">
+		TraceBoard Suite combines requirements traceability (TraceBoard), 
+		document generation from baselines (TraceDocs), and test execution 
+		with coverage reporting (TraceTest) — without per‑user pricing or cloud lock‑in.
+		</p>
+		<p class="lead">
+		Built for engineering teams in medical devices, 
+		industrial automation, defense, aerospace, embedded software, 
+		and regulated product development.
+		</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#">Try the live demo</a>
+        <a class="btn" href="#pricing">See pricing</a>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <svg viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- connector lines -->
+        <line x1="240" y1="84" x2="240" y2="128" stroke="#b9c2ca" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="80" y1="128" x2="400" y2="128" stroke="#b9c2ca" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="80" y1="128" x2="80" y2="140" stroke="#b9c2ca" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="240" y1="128" x2="240" y2="140" stroke="#b9c2ca" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <line x1="400" y1="128" x2="400" y2="140" stroke="#b9c2ca" stroke-width="1.5" stroke-dasharray="3 3"/>
+
+        <!-- junction crosshairs -->
+        <text x="80" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="#2e5fa3">+</text>
+        <text x="240" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="#2e5fa3">+</text>
+        <text x="400" y="132" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="14" fill="#2e5fa3">+</text>
+
+        <!-- requirement node -->
+        <rect x="130" y="16" width="220" height="68" rx="2" fill="#ffffff" stroke="#dde2e6"/>
+        <text x="146" y="36" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#2e5fa3">REQ-014</text>
+        <text x="146" y="56" font-family="Inter, sans-serif" font-size="13" fill="#1c2541">Export requirements to PDF</text>
+        <circle cx="150" cy="72" r="3" fill="#2e5fa3"/>
+        <text x="158" y="75" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4f5e6d">Approved</text>
+
+        <!-- task 1 -->
+        <rect x="10" y="140" width="140" height="68" rx="2" fill="#ffffff" stroke="#dde2e6"/>
+        <text x="24" y="160" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#1c2541">TASK-102</text>
+        <text x="24" y="178" font-family="Inter, sans-serif" font-size="12" fill="#1c2541">Build PDF export</text>
+        <circle cx="24" cy="194" r="3" fill="#e8833a"/>
+        <text x="32" y="197" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4f5e6d">In progress</text>
+
+        <!-- task 2 -->
+        <rect x="170" y="140" width="140" height="68" rx="2" fill="#ffffff" stroke="#dde2e6"/>
+        <text x="184" y="160" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#1c2541">TASK-103</text>
+        <text x="184" y="178" font-family="Inter, sans-serif" font-size="12" fill="#1c2541">Add export button</text>
+        <circle cx="184" cy="194" r="3" fill="#2e5fa3"/>
+        <text x="192" y="197" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4f5e6d">Done</text>
+
+        <!-- test -->
+        <rect x="330" y="140" width="140" height="68" rx="2" fill="#ffffff" stroke="#dde2e6"/>
+        <text x="344" y="160" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="#1c2541">TEST-031</text>
+        <text x="344" y="178" font-family="Inter, sans-serif" font-size="12" fill="#1c2541">Verify PDF output</text>
+        <circle cx="344" cy="194" r="3" fill="#2e5fa3"/>
+        <text x="352" y="197" font-family="IBM Plex Mono, monospace" font-size="10" fill="#4f5e6d">Passed</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- WHO USES                                          -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="who-uses">
+  <div class="who-uses-head">
+    <h2>Who uses TraceBoard Suite?</h2>
+  </div>
+  <div class="who-uses-grid">
+
+    <div class="who-card">
+      <h3>Companies moving away from Excel</h3>
+      <p>Requirements, tasks and test evidence are becoming too difficult to maintain manually.</p>
+    </div>
+
+    <div class="who-card">
+      <h3>Teams that find Jira too complex</h3>
+      <p>Need requirements traceability without plugins, workflows and administration overhead.</p>
+    </div>
+
+    <div class="who-card">
+      <h3>Organizations facing audits</h3>
+      <p>Need clear evidence that every requirement was implemented and verified.</p>
+    </div>
+
+  </div>
+  <p style="max-width:640px; margin:24px auto 0; text-align:center; color:var(--slate); font-size:14px;">TraceDocs and TraceTest serve the same audience — part of the same suite, available in every plan.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- HOW IT WORKS                                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="how-it-works" id="how-it-works">
+  <div class="how-it-works-head">
+    <p class="section-eyebrow">01 — How it works</p>
+    <h2>Plan, Document, Prove.</h2>
+    <p>Three products that share the same data, users, and authentication — deploy once, use all three.</p>
+  </div>
+  <div class="how-grid">
+
+    <div class="how-step">
+      <p class="step-number">Step 1 — Plan the work</p>
+      <h3>TraceBoard</h3>
+      <p>Create requirements, tasks, bugs, and tests. Link them together. Track progress on Kanban boards and create immutable baselines for compliance.</p>
+      <img src="Flow.png" alt="TraceBoard – requirements and traceability" style="width:100%; border:1px solid var(--hairline); border-radius:4px;" />
+    </div>
+
+    <div class="how-step">
+      <p class="step-number">Step 2 — Document the work</p>
+      <h3>TraceDocs</h3>
+      <p>Create baselines, then generate SRS and Test Plan PDFs from your traceability data. Write and organize knowledge base articles with a Markdown editor and folders.</p>
+      <img src="Tracedocs_Test_plan.png" alt="TraceDocs – document generation and Markdown editor" style="width:100%; border:1px solid var(--hairline); border-radius:4px;" />
+    </div>
+
+    <div class="how-step">
+      <p class="step-number">Step 3 — Prove the work</p>
+      <h3>TraceTest</h3>
+      <p>Execute test runs, record results (Pass/Fail/Blocked), and view coverage reports. Every result linked back to its requirement — full audit trail.</p>
+      <img src="TraceTest.png" alt="TraceTest – test runs and coverage reporting" style="width:100%; border:1px solid var(--hairline); border-radius:4px;" />
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- CAPABILITIES                                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="capabilities" id="capabilities">
+  <div class="capabilities-head">
+    <p class="section-eyebrow">02 — Capabilities</p>
+    <h2>Three products, one suite.</h2>
+    <p>TraceBoard, TraceDocs, and TraceTest — built to work together from day one.</p>
+  </div>
+  <div class="pillars-grid">
+
+    <div class="pillar">
+      <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="18" cy="6" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+        <circle cx="12" cy="18" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="8.2" y1="7.4" x2="10.2" y2="16" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="15.8" y1="7.4" x2="13.8" y2="16" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <h3>TraceBoard — Plan the work</h3>
+      <p>Requirements, tasks, bugs, and tests linked in one workspace. Kanban boards, baselines, compliance exports, and full traceability — always up to date.</p>
+    </div>
+
+    <div class="pillar">
+      <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="3" y1="9" x2="21" y2="9" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="8" y1="4" x2="8" y2="20" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="13" y1="9" x2="13" y2="20" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="18" y1="9" x2="18" y2="20" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <h3>TraceDocs — Document the work</h3>
+      <p>Generate SRS and Test Plan PDFs from baselines. Markdown editor with live preview, folders, and a knowledge base linked to your traceability data.</p>
+    </div>
+
+    <div class="pillar">
+      <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="2" y1="9" x2="22" y2="9" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="2" y1="15.5" x2="22" y2="15.5" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="9" y1="2" x2="9" y2="22" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="15.5" y1="2" x2="15.5" y2="22" stroke="currentColor" stroke-width="1.5"/>
+      </svg>
+      <h3>TraceTest — Prove the work</h3>
+      <p>Create and execute test runs, record results (Pass/Fail/Blocked), and get coverage reports. Link test results back to requirements — full traceability from spec to evidence.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPARISON                                       -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="comparison" id="comparison">
+  <div class="comparison-head">
+    <p class="section-eyebrow">03 — Why TraceBoard Suite</p>
+    <h2>Built where Excel, Jira, and Confluence fall short.</h2>
+    <p>Smart engineering SMBs switch to TraceBoard Suite for traceability that passes audits, documents that write themselves, and test runs linked to requirements — on their own server, in minutes.</p>
+  </div>
+
+  <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Excel</th>
+          <th>Jira</th>
+          <th>TraceBoard Suite</th>
+        </tr>
+      </thead>
+
+	<tbody>
+		<tr>
+		  <td>Self-hosted (air-gapped ready)</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Flat files only</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Cloud / heavy Data Center</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">One Docker command</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Requirements ↔ Tasks ↔ Tests traceability</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Manual only</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Plugins required</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Automatic trace graph</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Baselines (compliance snapshots)</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Not available</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Plugin-based</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Immutable snapshots</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>SSO (OIDC)</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Not supported</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Via Atlassian Access</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">OIDC ready (self-host / cloud)</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Excel import / export</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Native</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">CSV Only</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Full project export & import</span>
+			</div>
+		  </td>
+
+		</tr>
+		<tr>
+		  <td>Simple pricing</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <span class="status muted">Free (but hidden costs)</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <span class="status muted">~€10–€20/user/month (cloud); self-hosted Data Center significantly higher cost</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <span class="status primary">€999–€11,990/year flat (no per-user pricing, self-hosted)</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Learning curve</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <span class="status muted">None</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <span class="status muted">Weeks</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <span class="status primary">Minutes</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Audit‑ready in one click</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Compliance grid + PDF exports</span>
+			</div>
+		  </td>
+		</tr>
+
+	</tbody>
+    </table>
+  </div>
+
+  <p style="max-width:var(--max-width); margin:24px auto 0; text-align:center; color:var(--slate); font-size:14px;">TraceBoard Suite is designed for teams that need audit-ready traceability but cannot justify the cost and complexity of enterprise ALM platforms such as DOORS, Jama, Polarion or Codebeamer.</p>
+
+  <div class="replaces-grid">
+    <div class="replace-card">
+      <h3>Replaces <span class="from">Excel & Jira</span></h3>
+      <p>TraceBoard provides structured requirements, tasks, tests, trace links, Kanban boards, and baselines — <em>no plugins, no admin overhead</em>.</p>
+    </div>
+    <div class="replace-card">
+      <h3>Replaces <span class="from">Confluence</span></h3>
+      <p>TraceDocs generates SRS and Test Plan PDFs from baselines. Markdown editor with folders and a knowledge base — <em>linked to your requirements</em>.</p>
+    </div>
+    <div class="replace-card">
+      <h3>Replaces <span class="from">Manual Test Spreadsheets</span></h3>
+      <p>TraceTest runs test executions, records results (Pass/Fail/Blocked), and shows coverage reports — <em>fully traceable to requirements</em>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- BOTTOM LINE                                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="bottom-line-section">
+  <div class="bottom-line-card">
+    <h2>TraceBoard Suite – Requirements, Documents, and Tests in one self‑hosted platform.</h2>
+    <p>One Docker stack. One flat price.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- DEPLOYMENT                                       -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="deploy" id="deployment">
+  <div class="deploy-head">
+    <p class="section-eyebrow">04 — Deployment</p>
+    <h2>Runs where you want it.</h2>
+    <p>Today TraceBoard Suite is available as self-hosted software. A managed cloud option is planned for teams that prefer zero infrastructure management.</p>
+  </div>
+
+  <div class="deploy-grid">
+
+    <div class="deploy-card">
+      <h3>Self-hosted (available now)</h3>
+      <p>
+        One Docker Compose stack with its own databases. Install it on your own server and your data never leaves your infrastructure.
+        Air-gapped deployments supported.
+      </p>
+      <a class="deploy-link" href="#pricing">See self-hosted pricing →</a>
+    </div>
+
+    <div class="deploy-card" style="opacity:0.6; border-style:dashed;">
+      <h3>Managed cloud (planned)</h3>
+      <p>
+        A hosted TraceBoard Suite instance for teams that prefer zero maintenance.
+        We handle updates, backups and infrastructure.
+      </p>
+      <span class="deploy-link" style="cursor:default;">Coming later →</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PRICING                                          -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="pricing" id="pricing">
+  <div class="pricing-head">
+    <p class="section-eyebrow">05 — Pricing</p>
+    <h2>Simple pricing for software that stays simple.</h2>
+    <p>All plans include the core TraceBoard Suite capabilities — tasks, bugs, requirements, traceability, tests, document generation (TraceDocs), test execution (TraceTest), and Excel import/export. Advanced controls such as SSO (OIDC) are available in higher tiers. Choose how you want to run it.</p>
+  </div>
+
+  <div class="pricing-toggle-row">
+    <div class="toggle" role="group" aria-label="Choose deployment">
+      <button type="button" data-mode="self-hosted" aria-pressed="true">Self-hosted</button>
+      <!-- <button type="button" data-mode="cloud" aria-pressed="false">Managed cloud</button> -->
+    </div>
+  </div>
+
+  <p class="mode-note" id="self-hosted-note">Runs as a single Docker Compose stack with its own databases. Deploy it on your own server in minutes — your data stays on your infrastructure.</p>
+  <p class="mode-note" id="cloud-note" hidden>We run a private instance for your team on servers in the EU. Nothing to install — log in and get to work.</p>
+
+  <!-- Self-hosted pricing -->
+  <div class="cards-grid" id="self-hosted-cards">
+
+    <div class="card">
+      <p class="tier-code">01 — Self-hosted</p>
+      <h3 class="tier-name">Trial</h3>
+      <p class="tier-price">€0</p>
+      <p class="tier-sub">Up to 5 users</p>
+      <p class="tier-desc">Experience the full power of TraceBoard Suite risk-free and see how quickly structured traceability can transform your project clarity.</p>
+      <p class="tier-include">30 days trial with full traceability features</p>
+      <a class="btn" href="#">Get started</a>
+    </div>
+
+    <div class="card">
+      <p class="tier-code">02 — Self-hosted</p>
+      <h3 class="tier-name">Starter</h3>
+      <p class="tier-price">€999<span class="unit"> / year</span></p>
+      <p class="tier-sub">Up to 5 users</p>
+      <p class="tier-desc">A lightweight entry point for small teams who need disciplined traceability without complexity or overhead.</p>
+      <p class="tier-include">12 months of updates & email support</p>
+      <a class="btn btn-primary" href="#">Get started</a>
+    </div>
+
+    <div class="card">
+      <p class="tier-code">03 — Self-hosted</p>
+      <h3 class="tier-name">Professional</h3>
+      <p class="tier-price">€2,490<span class="unit"> / year</span></p>
+      <p class="tier-sub">Up to 15 users</p>
+      <p class="tier-desc">Built for growing teams that need scalable traceability, stronger governance, and reliable cross-artifact linking across projects.</p>
+      <p class="tier-include">12 months of updates & email support</p>
+      <a class="btn" href="#">Get started</a>
+    </div>
+
+    <div class="card">
+      <p class="tier-code">04 — Self-hosted</p>
+      <h3 class="tier-name">Team</h3>
+      <p class="tier-price">€5,990</p>
+      <p class="tier-sub">Up to 40 users</p>
+      <p class="tier-desc">Designed for multi-team collaboration with centralized visibility, standardized workflows, and controlled access across projects.</p>
+      <p class="tier-include">SSO(OIDC). Priority support & onboarding</p>
+      <a class="btn" href="#">Get started</a>
+    </div>
+
+	<div class="card">
+      <p class="tier-code">05 — Self-hosted</p>
+      <h3 class="tier-name">Business</h3>
+      <p class="tier-price">€11,990</p>
+      <p class="tier-sub">Up to 100 users</p>
+      <p class="tier-desc">Enterprise-ready traceability for organizations that demand full governance, SSO integration, and consistent control across large, distributed environments.</p>
+      <p class="tier-include">SSO(OIDC). Priority support & onboarding</p>
+      <a class="btn" href="#">Get started</a>
+    </div>
+
+  </div>
+
+  <!-- Managed cloud pricing -->
+  <div class="cards-grid" id="cloud-cards" hidden>
+
+    <div class="card">
+      <p class="tier-code">01 — Managed cloud</p>
+      <span class="tier-availability">Available Q4 2026</span>
+      <h3 class="tier-name">Small</h3>
+      <p class="tier-price">€39<span class="unit"> / month</span></p>
+      <p class="tier-sub">€390 / year (2 months free) · up to 5 users</p>
+      <p class="tier-desc">A private instance for one small team. We handle setup, backups and updates.</p>
+      <p class="tier-include">Hosted in the EU</p>
+      <a class="btn" href="#">Start 14-day trial</a>
+    </div>
+
+    <div class="card featured">
+      <p class="tier-code">02 — Managed cloud</p>
+      <span class="tier-availability">Available Q4 2026</span>
+      <span class="tier-tag">Most chosen</span>
+      <h3 class="tier-name">Growing</h3>
+      <p class="tier-price">€79<span class="unit"> / month</span></p>
+      <p class="tier-sub">€790 / year (2 months free) · up to 15 users</p>
+      <p class="tier-desc">For teams that have outgrown spreadsheets and shared documents.</p>
+      <p class="tier-include">Hosted in the EU</p>
+      <a class="btn btn-primary" href="#">Start 14-day trial</a>
+    </div>
+
+    <div class="card">
+      <p class="tier-code">03 — Managed cloud</p>
+      <span class="tier-availability">Available Q4 2026</span>
+      <h3 class="tier-name">Scale</h3>
+      <p class="tier-price">€149<span class="unit"> / month</span></p>
+      <p class="tier-sub">€1,490 / year (2 months free) · up to 50 users</p>
+      <p class="tier-desc">For larger teams running several projects side by side.</p>
+      <p class="tier-include">Hosted in the EU</p>
+      <a class="btn" href="#">Start 14-day trial</a>
+    </div>
+
+    <div class="card">
+      <p class="tier-code">04 — Managed cloud</p>
+      <span class="tier-availability">Available Q4 2026</span>
+      <h3 class="tier-name">Enterprise</h3>
+      <p class="tier-price">Custom</p>
+      <p class="tier-sub">50+ users · dedicated instance</p>
+      <p class="tier-desc">For organizations that need a dedicated, larger instance.</p>
+      <p class="tier-include">Priority support & onboarding</p>
+      <a class="btn" href="#">Talk to us</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- FEATURES (all plans)                             -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="features">
+  <div class="features-head">
+    <h2>Every tier runs the full suite.</h2>
+    <p>Core features from TraceBoard, TraceDocs, and TraceTest are included in all plans. Higher tiers add SSO and increase user limits.</p>
+  </div>
+  <div class="features-grid">
+
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Tasks, bugs, requirements & tests in one workspace</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Requirement-to-task traceability links</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Kanban boards with a clean, opinionated workflow — no configuration needed</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Excel import & export for every item type</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>PDF export of requirement specs</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Admin, member & viewer roles</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Security updates & patches included</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Email support, included on every plan</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>One‑click immutable baselines</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>SSO (OIDC) — self‑hosted or cloud IdP</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Sprints with board filtering</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Document generation (SRS, Test Plans) from baselines (TraceDocs)</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Markdown editor with live preview and folders (TraceDocs)</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Test runs, test results (Pass/Fail/Blocked) and coverage reporting (TraceTest)</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Product switcher to navigate between TraceBoard, TraceDocs, and TraceTest</span>
+    </div>
+
+  </div>
+
+  <!-- Feature matrix -->
+  <div class="compare-table-wrap" style="margin-top:48px;">
+    <table class="compare-table" style="table-layout:auto;">
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>Starter</th>
+          <th>Professional</th>
+          <th>Team</th>
+          <th>Business</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="col-cap">Users</td>
+          <td>5</td>
+          <td>15</td>
+          <td>40</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td class="col-cap">Email support</td>
+          <td><span class="badge-green">✓</span></td>
+          <td><span class="badge-green">✓</span></td>
+          <td>Priority</td>
+          <td>Priority</td>
+        </tr>
+        <tr>
+          <td class="col-cap">SSO (OIDC)</td>
+          <td><span class="cross">–</span></td>
+          <td><span class="cross">–</span></td>
+          <td><span class="badge-green">✓</span></td>
+          <td><span class="badge-green">✓</span></td>
+        </tr>
+        <tr>
+          <td class="col-cap">Onboarding</td>
+          <td><span class="cross">–</span></td>
+          <td><span class="cross">–</span></td>
+          <td><span class="badge-green">✓</span></td>
+          <td><span class="badge-green">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- FAQ                                              -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="faq" id="faq">
+  <h2>Questions</h2>
+
+  <details>
+    <summary>What happens if I stop renewing my self-hosted license?</summary>
+    <p>The software keeps running with the features you already have. You stop receiving updates and support until you renew.</p>
+  </details>
+
+  <details>
+    <summary>What is the difference between TraceBoard, TraceDocs, and TraceTest?</summary>
+    <p>TraceBoard is the core traceability engine – manage requirements, tasks, bugs, tests, and trace links. TraceDocs generates compliance documents (SRS, Test Plans) from baselines and provides a Markdown knowledge base. TraceTest tracks test execution, records results, and shows coverage reports. All three share the same data, users, and authentication.</p>
+  </details>
+
+  <details>
+    <summary>Can I move from Managed Cloud to self-hosted later?</summary>
+    <p>Yes. Export your data and import it into your own instance. Same format either way, so there's no lock-in.</p>
+  </details>
+
+  <details>
+    <summary>Is there a trial?</summary>
+    <p>Yes — 30 days with the full current feature set</p>
+  </details>
+
+  <details>
+    <summary>Do annual plans cost less than monthly?</summary>
+    <p>Yes. Paying yearly on Managed Cloud costs the same as 10 months instead of 12. Self-hosted licenses are billed yearly.</p>
+  </details>
+
+  <details>
+    <summary>Does TraceBoard Suite support air‑gapped deployments?</summary>
+    <p>Yes. The self-hosted Docker Compose stack includes its own databases and runs fully offline. No external calls are made — your data stays entirely within your network.</p>
+  </details>
+
+  <details>
+    <summary>What makes TraceBoard Suite different from Jira?</summary>
+    <p>TraceBoard Suite is built specifically for traceability between requirements, tasks and tests — with one‑click baselines and compliance exports. It includes document generation (TraceDocs) and test execution (TraceTest) in the same platform. It's a single Docker Compose stack you own, not a cloud platform you subscribe to. All core traceability features are included in every plan.</p>
+  </details>
+
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- FINAL CTA                                        -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="final-cta">
+  <p class="section-eyebrow" style="text-align:center;">06 — Get started</p>
+  <h2>See it before you decide.</h2>
+  <p>Try the live demo with sample data, or book a short call and we'll set up a private instance while you watch.</p>
+  <div class="cta-buttons">
+    <a class="btn btn-primary" href="#">Try the live demo</a>
+    <a class="btn" href="#">Book a setup call</a>
+  </div>
+</section>
+
+<section style="padding:48px 24px; text-align:center; border-top:1px solid var(--hairline);">
+  <p style="max-width:640px; margin:0 auto; color:var(--slate); font-size:14px; font-style:italic;">Built by a software engineer with 25+ years in industrial software development, project management, testing and requirements engineering.</p>
+</section>
+
+<footer>
+  <div>TraceBoard Suite — Self‑hosted traceability for engineering teams. © 2026</div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+</footer>
+
+<script>
+  const toggleButtons = document.querySelectorAll('.toggle button');
+  const selfHostedCards = document.getElementById('self-hosted-cards');
+  const cloudCards = document.getElementById('cloud-cards');
+  const selfHostedNote = document.getElementById('self-hosted-note');
+  const cloudNote = document.getElementById('cloud-note');
+
+  toggleButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      toggleButtons.forEach(b => b.setAttribute('aria-pressed', 'false'));
+      btn.setAttribute('aria-pressed', 'true');
+
+      const isCloud = btn.dataset.mode === 'cloud';
+      selfHostedCards.hidden = isCloud;
+      cloudCards.hidden = !isCloud;
+      selfHostedNote.hidden = isCloud;
+      cloudNote.hidden = !isCloud;
+    });
+  });
+</script>
 
 </body>
 </html>
