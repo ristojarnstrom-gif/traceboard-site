@@ -706,6 +706,54 @@
   .cta-buttons{ display:flex; gap:16px; justify-content:center; flex-wrap:wrap; }
   .cta-buttons .btn{ padding:14px 28px; }
 
+  /* ---------- Get Started Downloads ---------- */
+  .get-started{ padding:72px 24px; border-top:1px solid var(--hairline); background:var(--paper-raised); }
+  .get-started-head{ max-width:640px; margin:0 auto 40px; text-align:center; }
+  .get-started-head h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-size:clamp(24px, 3.5vw, 34px);
+    margin:0 0 12px;
+  }
+  .get-started-head p{ color:var(--slate); margin:0; }
+  .get-started-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:24px;
+    max-width:700px;
+    margin:0 auto;
+  }
+  .get-started-card{
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--hairline);
+    padding:28px 24px;
+    text-align:center;
+  }
+  .get-started-card::before, .get-started-card::after{
+    content:'+';
+    position:absolute;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:16px;
+    line-height:1;
+    color:var(--hairline-strong);
+  }
+  .get-started-card::before{ top:-8px; left:-8px; }
+  .get-started-card::after{ bottom:-8px; right:-8px; }
+  .get-started-card h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin:0 0 8px;
+  }
+  .get-started-card p{
+    color:var(--slate);
+    font-size:14px;
+    margin:0 0 20px;
+  }
+  @media (max-width:640px){
+    .get-started-grid{ grid-template-columns:1fr; }
+  }
+
   /* ---------- Footer ---------- */
   footer{
     border-top:1px solid var(--hairline);
@@ -1481,6 +1529,32 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════ -->
+<!-- GET STARTED — DOWNLOADS                          -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="get-started" id="get-started">
+  <div class="get-started-head">
+    <p class="section-eyebrow">06 — Get started</p>
+    <h2>Download & start your trial</h2>
+    <p>Get your 30-day trial license and the Docker Compose stack — everything you need to run TraceBoard Suite on your own infrastructure.</p>
+  </div>
+  <div class="get-started-grid">
+
+    <div class="get-started-card">
+      <h3>Trial License</h3>
+      <p>Get your 30-day trial license key. Unlocks the full TraceBoard Suite with all features — no credit card required.</p>
+      <a class="btn btn-primary" href="https://demo.traceboardsuite.com/api/v1/trial-license" download="traceboard.license">Download trial license</a>
+    </div>
+
+    <div class="get-started-card">
+      <h3>TraceBoard Suite Package</h3>
+      <p>Download the Docker Compose stack. Deploy on your own server in minutes — your data stays on your infrastructure.</p>
+      <a class="btn btn-primary" href="https://demo.traceboardsuite.com/download/traceboard-suite.zip">Download TraceBoard Suite</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
 <!-- FEATURES (all plans)                             -->
 <!-- ═══════════════════════════════════════════════ -->
 <section class="features">
@@ -1651,7 +1725,7 @@
 <!-- FINAL CTA                                        -->
 <!-- ═══════════════════════════════════════════════ -->
 <section class="final-cta">
-  <p class="section-eyebrow" style="text-align:center;">06 — Get started</p>
+  <p class="section-eyebrow" style="text-align:center;">07 — Get started</p>
   <h2>See it before you decide.</h2>
   <p>Try the live demo with sample data, or book a short call and we'll set up a private instance while you watch.</p>
   <div class="cta-buttons">
