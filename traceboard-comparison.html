@@ -231,6 +231,7 @@
 
     tbody tr:nth-child(even) td { background: var(--surface-alt); }
     tbody tr:nth-child(even) td.tb { background: var(--tb-col-bg-alt); }
+    tbody tr:nth-child(even) th[scope="row"] { background: var(--surface-alt); }
 
     tbody td {
       padding: 13px 18px;
@@ -239,14 +240,20 @@
       vertical-align: middle;
     }
 
-    tbody td:first-child {
+    tbody td:first-child,
+    tbody th[scope="row"] {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 500;
       font-size: 13px;
       color: var(--text-muted);
+      padding: 13px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+      text-align: left;
     }
 
-    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:last-child td,
+    tbody tr:last-child th[scope="row"] { border-bottom: none; }
 
     .yes     { color: var(--yes);     font-weight: 600; font-size: 16px; }
     .partial { color: var(--partial); font-weight: 600; font-size: 16px; }
@@ -254,6 +261,28 @@
 
     .mono { font-family: 'JetBrains Mono', monospace; font-size: 13px; }
     .mono.accent { color: var(--accent); font-weight: 600; }
+
+    /* Mailto link styling for "Contact" cells */
+    .mailto-link {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-weight: 500;
+      transition: color 0.15s, opacity 0.15s;
+    }
+
+    .mailto-link:hover {
+      opacity: 0.8;
+    }
+
+    /* Tooltip for partial symbol */
+    .partial[title] {
+      cursor: help;
+      border-bottom: 1px dotted var(--partial);
+    }
 
     .table-note {
       font-size: 12px;
@@ -405,6 +434,21 @@
       opacity: 1;
     }
 
+    /* CTA learn-more link */
+    .cta-learn-more {
+      display: block;
+      margin-top: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s;
+    }
+
+    .cta-learn-more:hover {
+      color: var(--accent);
+    }
+
     /* Footer */
     .page-footer {
       padding: 36px 24px;
@@ -453,17 +497,17 @@
       <table>
         <thead>
           <tr>
-            <th></th>
-            <th class="tb">TraceBoard Suite <span class="col-badge">SMB</span></th>
-            <th>IBM DOORS Next</th>
-            <th>Siemens Polarion</th>
-            <th>PTC Codebeamer</th>
-            <th>Jama Software</th>
+            <th scope="col"></th>
+            <th scope="col" class="tb">TraceBoard Suite <span class="col-badge">SMB</span></th>
+            <th scope="col">IBM DOORS Next</th>
+            <th scope="col">Siemens Polarion</th>
+            <th scope="col">PTC Codebeamer</th>
+            <th scope="col">Jama Software</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Requirements Management</td>
+            <th scope="row">Requirements Management</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
@@ -471,7 +515,7 @@
             <td><span class="yes">✓</span></td>
           </tr>
           <tr>
-            <td>Test Case Management</td>
+            <th scope="row">Test Case Management</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="no">—</span></td>
             <td><span class="yes">✓</span></td>
@@ -479,47 +523,47 @@
             <td><span class="yes">✓</span></td>
           </tr>
           <tr>
-            <td>Document Control / DMS</td>
+            <th scope="row">Document Control / DMS</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="no">—</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial" title="Partial functionality — requires add-on or additional configuration">~</span></td>
             <td><span class="yes">✓</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial" title="Partial functionality — requires add-on or additional configuration">~</span></td>
           </tr>
           <tr>
-            <td>End-to-End Req → Test Traceability</td>
+            <th scope="row">End-to-End Req → Test Traceability</th>
             <td class="tb"><span class="yes">✓</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial" title="Partial functionality — requires add-on or additional configuration">~</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
           </tr>
           <tr>
-            <td>Self-Hosted / On-Premise Deployment</td>
+            <th scope="row">Self-Hosted / On-Premise Deployment</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
-            <td><span class="partial">~</span></td>
-            <td><span class="yes">✓</span></td>
-            <td><span class="no">—</span></td>
-          </tr>
-          <tr>
-            <td>Air-Gap / Offline Support</td>
-            <td class="tb"><span class="yes">✓</span></td>
-            <td><span class="yes">✓</span></td>
-            <td><span class="no">—</span></td>
+            <td><span class="partial" title="Partial functionality — requires add-on or additional configuration">~</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="no">—</span></td>
           </tr>
           <tr>
-            <td>ISO 26262 / IEC 62304 / DO-178C</td>
+            <th scope="row">Air-Gap / Offline Support</th>
+            <td class="tb"><span class="yes">✓</span></td>
+            <td><span class="yes">✓</span></td>
+            <td><span class="no">—</span></td>
+            <td><span class="yes">✓</span></td>
+            <td><span class="no">—</span></td>
+          </tr>
+          <tr>
+            <th scope="row">ISO 26262 / IEC 62304 / DO-178C</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
             <td><span class="yes">✓</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial" title="Partial functionality — requires add-on or additional configuration">~</span></td>
           </tr>
           <tr>
-            <td>Docker / Simple Deployment</td>
+            <th scope="row">Docker / Simple Deployment</th>
             <td class="tb"><span class="yes">✓</span></td>
             <td><span class="no">—</span></td>
             <td><span class="no">—</span></td>
@@ -527,23 +571,23 @@
             <td><span class="no">—</span></td>
           </tr>
           <tr>
-            <td>Annual Price (starting)</td>
+            <th scope="row">Annual Price (starting)</th>
             <td class="tb mono accent">From €999</td>
-            <td class="mono">Contact</td>
-            <td class="mono">Contact</td>
-            <td class="mono">Contact</td>
-            <td class="mono">Contact</td>
+            <td class="mono"><a class="mailto-link" href="mailto:sales@traceboardsuite.com?subject=Quote%20Request%20-%20IBM%20DOORS%20Next">Contact</a></td>
+            <td class="mono"><a class="mailto-link" href="mailto:sales@traceboardsuite.com?subject=Quote%20Request%20-%20Siemens%20Polarion">Contact</a></td>
+            <td class="mono"><a class="mailto-link" href="mailto:sales@traceboardsuite.com?subject=Quote%20Request%20-%20PTC%20Codebeamer">Contact</a></td>
+            <td class="mono"><a class="mailto-link" href="mailto:sales@traceboardsuite.com?subject=Quote%20Request%20-%20Jama%20Software">Contact</a></td>
           </tr>
           <tr>
-            <td>Est. Cost, 5-Person Team / Year</td>
-            <td class="tb mono accent">€999 – €2,490</td>
+            <th scope="row">Est. Cost, 5-Person Team / Year</th>
+            <td class="tb mono accent">From €999</td>
             <td class="mono">€15,000 – €30,000+</td>
             <td class="mono">€15,000 – €40,000+</td>
             <td class="mono">€12,000 – €25,000+</td>
             <td class="mono">€8,000 – €20,000+</td>
           </tr>
           <tr>
-            <td>Typical Setup Time</td>
+            <th scope="row">Typical Setup Time</th>
             <td class="tb mono accent">Minutes – Hours</td>
             <td>Months</td>
             <td>Months</td>
@@ -551,8 +595,8 @@
             <td>Weeks</td>
           </tr>
           <tr>
-            <td>Best Suited For</td>
-            <td class="tb" style="color:var(--accent);font-weight:600;font-family:'Space Grotesk',sans-serif;font-size:13px;">SMBs &amp; Independent Teams</td>
+            <th scope="row">Best Suited For</th>
+            <td class="tb" style="color:var(--accent);font-weight:600;font-family:'Space Grotesk',sans-serif;font-size:13px;">SMBs & Independent Teams</td>
             <td>Large Enterprise</td>
             <td>Large Enterprise</td>
             <td>Enterprise</td>
@@ -563,7 +607,7 @@
     </div>
 
     <p class="table-note">
-      ✓ Included &nbsp;·&nbsp; ~ Partial or add-on required &nbsp;·&nbsp; — Not included or outside primary scope<br>
+      ✓ Included &nbsp;·&nbsp; ~ Partial or add-on required (hover for details) &nbsp;·&nbsp; — Not included or outside primary scope<br>
       Enterprise pricing estimates are based on publicly available information, independent user reports, and industry analyst data.
       Actual quotes vary by organisation size, number of seats, and commercial terms. All figures indicative as of 2025–2026.
     </p>
@@ -591,7 +635,7 @@
       <div class="price-item featured">
         <div class="p-label">TraceBoard Suite</div>
         <div class="p-amount">€999 – €2,490</div>
-        <div class="p-note">All three modules. Unlimited users.<br>Flat annual licence. Self-hosted.</div>
+        <div class="p-note">Full traceability. Self-hosted.</div>
       </div>
     </div>
   </div>
@@ -636,8 +680,9 @@
     <div class="cta-bar">
       <h3>See TraceBoard Suite in action</h3>
       <p>Explore the live demo or review pricing to find the right plan for your team.</p>
-      <a href="https://demo.traceboardsuite.com" class="btn">Try the Live Demo</a>
+      <a href="https://demo.traceboardsuite.com/board/" class="btn">Try the Live Demo</a>
       <a href="https://traceboardsuite.com/#pricing" class="btn btn-ghost">View Pricing</a>
+      <a href="https://traceboardsuite.com" class="cta-learn-more">Learn more about TraceBoard Suite →</a>
     </div>
   </div>
 </section>
