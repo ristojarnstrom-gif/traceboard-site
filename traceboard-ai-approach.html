@@ -39,24 +39,45 @@
 
   /* ---------- Nav ---------- */
   .nav{
+    height:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 24px;
     border-bottom:1px solid var(--line);
     background:var(--surface);
   }
-  .nav-inner{
-    max-width:1080px; margin:0 auto; padding:20px 32px;
-    display:flex; align-items:center; justify-content:space-between;
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
   }
-  .brand{
-    font-family:'IBM Plex Mono', monospace;
-    font-weight:600; font-size:14px; letter-spacing:0.03em;
-    color:var(--navy-deep);
+  .logo img{
+    height:52px;
+    width:auto;
+    display:block;
   }
-  .brand span{color:var(--ink-faint); font-weight:400;}
+  .brand-name{
+    font-family:'IBM Plex Sans', sans-serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--ink);
+    letter-spacing:0.2px;
+  }
   .nav-links{
-    display:flex; gap:28px; font-size:14px; color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:28px;
+    font-size:14px;
+    color:var(--ink-soft);
   }
-  .nav-links a{text-decoration:none;}
-  .nav-links a:hover{color:var(--navy);}
+  .nav-links a{ color:var(--ink-soft); text-decoration:none; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a.active{
+    color:var(--navy);
+    font-weight:600;
+  }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -295,9 +316,17 @@
   .btn-secondary{background:transparent; color:var(--navy-deep); border:1px solid var(--line-strong);}
 
   footer{
-    padding:28px 0; text-align:center;
-    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-faint);
+    border-top:1px solid var(--line);
+    padding:32px 24px;
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-faint);
   }
+  footer a{ text-decoration:none; color:var(--ink-faint); }
+  footer a:hover{ color:var(--ink); }
+  .footer-links{ margin-top:8px; }
+  .footer-links a:not(:last-child)::after{ content:'·'; margin:0 10px; color:var(--line-strong); }
 
   @media (max-width: 760px){
     h1{font-size:36px;}
@@ -311,14 +340,18 @@
 <body>
 
 <nav class="nav">
-  <div class="nav-inner">
-    <div class="brand">TRACEBOARD<span> / suite</span></div>
-    <div class="nav-links">
-      <a href="#">Product</a>
-      <a href="#">Compare</a>
-      <a href="#" style="color:var(--navy); font-weight:600;">AI approach</a>
-      <a href="#">Pricing</a>
-    </div>
+  <a class="logo" href="index.html">
+    <img src="traceboard.png" alt="TraceBoard" style="height:40px; width:auto; display:block;">
+    <span class="brand-name">TraceBoard</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#how-it-works">How it works</a>
+    <a href="index.html#capabilities">Features</a>
+    <a href="traceboard-comparison.html">Compare</a>
+    <a href="index.html#deployment">Deployment</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="resources.html">Resources</a>
+    <a href="index.html#faq">FAQ</a>
   </div>
 </nav>
 
@@ -573,7 +606,14 @@
 
 </div>
 
-<footer>TRACEBOARD SUITE — NORDTRACE SOLUTIONS</footer>
+<footer>
+  <div>TraceBoard Suite — Self‑hosted traceability for engineering teams. © 2026</div>
+  <div class="footer-links">
+    <a href="index.html#privacy">Privacy</a>
+    <a href="index.html#terms">Terms</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
 
 </body>
 </html>

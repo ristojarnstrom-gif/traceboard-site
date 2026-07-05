@@ -449,17 +449,109 @@
       color: var(--accent);
     }
 
-    /* Footer */
-    .page-footer {
-      padding: 36px 24px;
+    /* Closing section */
+    .closing {
+      padding: 72px 24px;
       text-align: center;
-      font-size: 12px;
-      color: var(--text-faint);
-      border-top: 1px solid var(--border-subtle);
+      background: var(--hero-bg);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .page-footer a { color: var(--text-faint); text-decoration: none; }
-    .page-footer a:hover { color: var(--accent); }
+    .closing h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(22px, 3.5vw, 36px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-body {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 32px;
+      line-height: 1.65;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary { }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(2,132,199,0.5);
+      color: var(--accent);
+      opacity: 1;
+    }
+
+    /* ---------- Nav ---------- */
+    .nav{
+      height:80px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 24px;
+      border-bottom:1px solid var(--border);
+      background:var(--surface);
+    }
+    .logo{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+    }
+    .logo img{
+      height:52px;
+      width:auto;
+      display:block;
+    }
+    .brand-name{
+      font-family:'Space Grotesk', sans-serif;
+      font-weight:700;
+      font-size:22px;
+      color:var(--text);
+      letter-spacing:0.2px;
+    }
+    .nav-links{
+      display:flex;
+      align-items:center;
+      gap:28px;
+      font-size:14px;
+    }
+    .nav-links a{
+      color:var(--text-muted);
+      text-decoration:none;
+    }
+    .nav-links a:hover{ color:var(--text); }
+    .nav-links a.active{
+      color:var(--accent);
+      font-weight:600;
+    }
+
+    /* Footer */
+    footer{
+      border-top:1px solid var(--border-subtle);
+      padding:32px 24px;
+      text-align:center;
+      font-family:'JetBrains Mono', monospace;
+      font-size:13px;
+      color:var(--text-faint);
+    }
+    footer a{ text-decoration:none; color:var(--text-faint); }
+    footer a:hover{ color:var(--text); }
+    .footer-links{ margin-top:8px; }
+    .footer-links a:not(:last-child)::after{ content:'·'; margin:0 10px; color:var(--border); }
 
     @media (max-width: 680px) {
       .price-grid { grid-template-columns: 1fr; }
@@ -470,6 +562,22 @@
   </style>
 </head>
 <body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <img src="traceboard.png" alt="TraceBoard" style="height:40px; width:auto; display:block;">
+    <span class="brand-name">TraceBoard</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#how-it-works">How it works</a>
+    <a href="index.html#capabilities">Features</a>
+    <a href="traceboard-comparison.html" class="active">Compare</a>
+    <a href="index.html#deployment">Deployment</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="resources.html">Resources</a>
+    <a href="index.html#faq">FAQ</a>
+  </div>
+</nav>
 
 <!-- HERO -->
 <header class="hero">
@@ -716,10 +824,25 @@
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer class="page-footer">
-  &copy; 2026 NordTrace Solutions &nbsp;&middot;&nbsp; TraceBoard Suite &nbsp;&middot;&nbsp;
-  <a href="https://traceboardsuite.com">traceboardsuite.com</a>
+<section class="closing">
+  <h2>See where the line actually sits.</h2>
+  <p class="section-body">
+    The best way to understand the approval gate is to watch it work on your own data —
+    a messy spreadsheet, a real requirement set, or a document you're tired of formatting by hand.
+  </p>
+  <div class="cta-row">
+    <a href="mailto:sales@traceboardsuite.com" class="btn btn-primary">Book a walkthrough</a>
+    <a href="index.html#privacy" class="btn btn-secondary">Read the security & trust page</a>
+  </div>
+</section>
+
+<footer>
+  <div>TraceBoard Suite — Self‑hosted traceability for engineering teams. © 2026</div>
+  <div class="footer-links">
+    <a href="index.html#privacy">Privacy</a>
+    <a href="index.html#terms">Terms</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
 </footer>
 
 </body>
