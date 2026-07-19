@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features & Differentiators — TraceBoard Suite</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F7F8FA;
+    --surface: #FFFFFF;
+    --ink: #10181F;
+    --ink-soft: #4B5766;
+    --ink-faint: #7C8896;
+    --line: #E1E6EB;
+    --line-strong: #C7CFD6;
+    --navy: #1B3A5C;
+    --navy-deep: #10263D;
+    --committed: #2F6F5E;
+    --committed-soft: #E6F0ED;
+    --proposed: #B9752B;
+    --proposed-soft: #FBF0E2;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  a{color:inherit;}
+
+  /* ---------- Nav ---------- */
+  .nav{ border-bottom:1px solid var(--line); background:var(--surface); }
+  .nav-inner{
+    max-width:1080px; margin:0 auto; padding:20px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:14px; letter-spacing:0.03em; color:var(--navy-deep); }
+  .brand span{ color:var(--ink-faint); font-weight:400; }
+  .nav-links{ display:flex; gap:28px; font-size:14px; color:var(--ink-soft); }
+  .nav-links a{ text-decoration:none; }
+  .nav-links a:hover{ color:var(--navy); }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding:88px 0 64px; border-bottom:1px solid var(--line); }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--navy); display:flex; align-items:center; gap:10px; margin-bottom:22px;
+  }
+  .eyebrow::before{ content:''; width:22px; height:1px; background:var(--navy); }
+  h1{
+    font-family:'Source Serif 4', serif; font-weight:600; font-size:50px; line-height:1.14;
+    letter-spacing:-0.01em; max-width:820px; color:var(--navy-deep);
+  }
+  .hero-sub{ margin-top:24px; font-size:18px; color:var(--ink-soft); max-width:660px; line-height:1.65; }
+
+  .quickfacts{
+    margin-top:44px; display:grid; grid-template-columns:repeat(4, 1fr);
+    border:1px solid var(--line); background:var(--surface);
+  }
+  .quickfact{ padding:20px 22px; border-left:1px solid var(--line); }
+  .quickfact:first-child{ border-left:none; }
+  .quickfact .n{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:20px; color:var(--navy-deep); }
+  .quickfact .d{ font-size:12.5px; color:var(--ink-faint); margin-top:4px; }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:72px 0; border-bottom:1px solid var(--line); }
+  .section-head{ max-width:660px; margin-bottom:44px; }
+  .section-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:12px;
+  }
+  h2{ font-family:'Source Serif 4', serif; font-weight:600; font-size:32px; color:var(--navy-deep); line-height:1.25; }
+  .section-body{ color:var(--ink-soft); font-size:16px; margin-top:16px; max-width:620px; }
+
+  /* ---------- Differentiators (principle-style grid) ---------- */
+  .principles{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); margin-top:8px;
+  }
+  .principle{ background:var(--surface); padding:30px 26px; }
+  .principle-num{ font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-faint); margin-bottom:14px; }
+  .principle h3{ font-family:'Source Serif 4', serif; font-size:19px; font-weight:600; color:var(--navy-deep); margin-bottom:10px; }
+  .principle p{ color:var(--ink-soft); font-size:14.5px; }
+
+  .ai-note{
+    margin-top:24px; padding:16px 20px; border:1px dashed var(--line-strong);
+    display:flex; align-items:center; gap:14px; font-size:14px; color:var(--ink-soft); flex-wrap:wrap;
+  }
+  .ai-note a{ color:var(--navy); font-weight:600; text-decoration:none; }
+  .ai-note a:hover{ text-decoration:underline; }
+
+  /* ---------- Badges (shared vocabulary with AI approach page) ---------- */
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:'IBM Plex Mono', monospace; font-size:11px; font-weight:600; letter-spacing:0.06em;
+    padding:4px 9px; border-radius:3px;
+  }
+  .badge.proposes{ color:var(--proposed); background:var(--proposed-soft); border:1px dashed var(--proposed); }
+  .badge.committed{ color:var(--committed); background:var(--committed-soft); border:1px solid var(--committed); }
+
+  /* ---------- Product breakdown ---------- */
+  .product-block{ margin-top:8px; }
+  .product-block + .product-block{ margin-top:20px; }
+  .product-card{ background:var(--surface); border:1px solid var(--line); padding:30px 28px; }
+  .product-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:18px; flex-wrap:wrap; }
+  .product-name{ font-family:'Source Serif 4', serif; font-weight:600; font-size:22px; color:var(--navy-deep); }
+  .product-tag{ font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-faint); }
+  .product-feats{ display:grid; grid-template-columns:repeat(2, 1fr); gap:14px 20px; }
+  .pfeat{ display:flex; gap:10px; align-items:flex-start; font-size:14px; color:var(--ink-soft); }
+  .pfeat .badge{ flex-shrink:0; margin-top:1px; }
+
+  /* ---------- TCO ---------- */
+  .offline-box{
+    margin-top:8px; background:var(--navy-deep); color:#EAF0F5; padding:40px 40px;
+    display:grid; grid-template-columns:1fr 1.2fr; gap:40px; align-items:center;
+  }
+  .offline-box .stat{ font-family:'IBM Plex Mono', monospace; font-weight:600; font-size:46px; color:#fff; line-height:1; }
+  .offline-box .stat-label{ font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.06em; color:#AEC0CE; margin-top:12px; }
+  .offline-box p{ color:#CBD9E2; font-size:15px; margin-bottom:12px; }
+  .offline-box p:last-child{ margin-bottom:0; }
+
+  /* ---------- Comparison strip ---------- */
+  .compare-strip{
+    margin-top:8px; display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); background:var(--surface);
+  }
+  .compare-col{ padding:26px 28px; }
+  .compare-col + .compare-col{ border-left:1px solid var(--line); }
+  .compare-col h3{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink-faint); margin-bottom:14px;
+  }
+  .compare-col ul{ list-style:none; }
+  .compare-col li{ font-size:14px; color:var(--ink-soft); padding:8px 0; border-top:1px solid var(--line); }
+  .compare-col li:first-child{ border-top:none; }
+
+  /* ---------- Pricing ---------- */
+  .pricing-strip{
+    margin-top:8px; background:var(--surface); border:1px solid var(--line);
+    padding:28px 30px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap;
+  }
+  .pricing-copy{ font-size:15px; color:var(--ink-soft); max-width:520px; }
+  .pricing-copy b{ color:var(--navy-deep); }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    font-family:'IBM Plex Sans', sans-serif; font-weight:600; font-size:15px;
+    padding:13px 26px; border-radius:3px; text-decoration:none; display:inline-block;
+  }
+  .btn-primary{ background:var(--navy-deep); color:#fff; }
+  .btn-secondary{ background:transparent; color:var(--navy-deep); border:1px solid var(--line-strong); }
+
+  /* ---------- Closing ---------- */
+  .closing{ text-align:center; padding:80px 0 96px; border-bottom:none; }
+  .closing h2{ max-width:none; }
+  .closing .section-body{ margin:16px auto 0; text-align:center; }
+  .cta-row{ margin-top:32px; display:flex; gap:14px; justify-content:center; }
+
+  footer{ padding:28px 0; text-align:center; font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-faint); }
+
+  @media (max-width: 760px){
+    h1{ font-size:34px; }
+    .quickfacts{ grid-template-columns:repeat(2, 1fr); }
+    .principles, .compare-strip{ grid-template-columns:1fr; }
+    .compare-col + .compare-col{ border-left:none; border-top:1px solid var(--line); }
+    .product-feats{ grid-template-columns:1fr; }
+    .offline-box{ grid-template-columns:1fr; }
+    .pricing-strip{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">TRACEBOARD<span> / suite</span></div>
+    <div class="nav-links">
+      <a href="#" style="color:var(--navy); font-weight:600;">Features</a>
+      <a href="#">Compare</a>
+      <a href="#">AI approach</a>
+      <a href="#">Pricing</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow">Features &amp; differentiators</div>
+    <h1>Everything a compliance team needs. Nothing they have to configure for months.</h1>
+    <p class="hero-sub">
+      TraceBoard Suite is three connected products — requirements, documents, and test execution —
+      built specifically for ISO 26262, IEC 62304, and DO-178C teams. Here's what sets it apart from
+      the enterprise tools most of those teams are stuck paying for today.
+    </p>
+
+    <div class="quickfacts">
+      <div class="quickfact">
+        <div class="n">5–100</div>
+        <div class="d">Users per flat annual plan</div>
+      </div>
+      <div class="quickfact">
+        <div class="n">~10×</div>
+        <div class="d">Lower TCO vs. enterprise RM tools</div>
+      </div>
+      <div class="quickfact">
+        <div class="n">3</div>
+        <div class="d">Standards covered out of the box</div>
+      </div>
+      <div class="quickfact">
+        <div class="n">0</div>
+        <div class="d">AI required to run the full product</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">Why teams switch</div>
+      <h2>Five things most requirements tools weren't built for</h2>
+      <p class="section-body">Everything below is a direct response to how regulated engineering teams actually work — not a generic feature list.</p>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <h3>Live in days, not quarters</h3>
+        <p>ISO 26262, IEC 62304, and DO-178C workflows come pre-built. Skip the months of configuration most enterprise ALM rollouts require before a team traces its first requirement.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <h3>Air-gapped by design</h3>
+        <p>Self-hosted on your own infrastructure, with local model support for every AI feature. No project data leaves your network — a requirement, not an afterthought, for defense and medical work.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <h3>Flat, and it stays flat</h3>
+        <p>One annual price per team size. No per-seat licensing that grows unpredictably as your project — or your headcount — does.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <h3>Every link, both directions</h3>
+        <p>Requirements to tasks, tests, bugs, and documents — with suspect-link flagging when an upstream edit makes a downstream link stale.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <h3>Your data stays portable</h3>
+        <p>ReqIF import and export means you're never locked into a proprietary format to move between tools or hand off to a partner.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">06</div>
+        <h3>AI that can't lie to your audit trail</h3>
+        <p>Every AI-cited artifact ID is validated against real project data before it reaches you. Fabricated references get stripped, not shipped.</p>
+      </div>
+    </div>
+    <div class="ai-note">
+      <span class="badge committed">GOVERNANCE</span>
+      <span>Principle 06 is the short version — see <a href="#">Our approach to AI</a> for the full propose → validate → approve → commit pipeline.</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">The suite</div>
+      <h2>Three products. One traceability matrix.</h2>
+      <p class="section-body">Use them together, or start with just one — every artifact connects natively. Badges show which features are deterministic and which are AI-assisted, using the same vocabulary as our AI governance model.</p>
+    </div>
+
+    <div class="product-block">
+      <div class="product-card">
+        <div class="product-head">
+          <span class="product-name">TraceBoard</span>
+          <span class="product-tag">Requirements &amp; traceability</span>
+        </div>
+        <div class="product-feats">
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Bidirectional linking, baselines &amp; snapshot comparison</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Readiness Score from a fixed, published weighting formula</div>
+          <div class="pfeat"><span class="badge proposes">PROPOSES</span> AI import from messy PDF, Word &amp; Excel sources</div>
+          <div class="pfeat"><span class="badge proposes">PROPOSES</span> Suspect-link detection after upstream edits</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> ReqIF import / export</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Formal review &amp; sign-off workflow</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-card">
+        <div class="product-head">
+          <span class="product-name">TraceDocs</span>
+          <span class="product-tag">Document generation</span>
+        </div>
+        <div class="product-feats">
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Templated Word output with typed, deterministic data fields</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Evidence attachment &amp; document versioning</div>
+          <div class="pfeat"><span class="badge proposes">PROPOSES</span> AI-drafted narrative sections, clearly marked in every template</div>
+          <div class="pfeat"><span class="badge proposes">PROPOSES</span> Audit Narrative reports — verified facts separated from AI analysis</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-block">
+      <div class="product-card">
+        <div class="product-head">
+          <span class="product-name">TraceTest</span>
+          <span class="product-tag">Verification &amp; test</span>
+        </div>
+        <div class="product-feats">
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Execution tracking, pass/fail history &amp; coverage %</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Structural coverage recording (statement / decision / MC/DC)</div>
+          <div class="pfeat"><span class="badge proposes">PROPOSES</span> AI-assisted test case drafting from requirement text</div>
+          <div class="pfeat"><span class="badge committed">COMMITTED</span> Native linking to requirements, both directions</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">Total cost of ownership</div>
+      <h2>The sticker price was never the real cost</h2>
+    </div>
+    <div class="offline-box">
+      <div>
+        <div class="stat">~10×</div>
+        <div class="stat-label">LOWER TOTAL COST vs. TYPICAL ENTERPRISE RM TOOLS</div>
+      </div>
+      <div>
+        <p>Enterprise requirements tools rarely lose on the license line. They lose on implementation consultants, ongoing admin overhead, and the months it takes before a team traces its first requirement.</p>
+        <p>TraceBoard ships with the compliance workflow already built — a speed-to-value trade-off you can measure in weeks saved, not just euros.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-eyebrow">What you're replacing</div>
+      <h2>Built to fit where legacy tools don't</h2>
+    </div>
+    <div class="compare-strip">
+      <div class="compare-col">
+        <h3>Typical enterprise ALM</h3>
+        <ul>
+          <li>Per-seat licensing that scales unpredictably</li>
+          <li>Weeks to months of consultant-led configuration</li>
+          <li>AI, where present, bolted on with no clear line between fact and suggestion</li>
+          <li>Cloud-only or costly on-prem add-ons for air-gapped environments</li>
+        </ul>
+      </div>
+      <div class="compare-col">
+        <h3>TraceBoard Suite</h3>
+        <ul>
+          <li>Flat annual pricing for 5 to 100 users</li>
+          <li>Pre-built ISO 26262 / IEC 62304 / DO-178C workflows from day one</li>
+          <li>AI proposes only — every suggestion validated and human-approved before it commits</li>
+          <li>Self-hosted and air-gapped by design, not by exception</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-bottom:none;">
+    <div class="section-head">
+      <div class="section-eyebrow">Pricing</div>
+      <h2>Flat bundles, no per-seat surprises</h2>
+    </div>
+    <div class="pricing-strip">
+      <div class="pricing-copy">Flat annual pricing from <b>€999 to €5,990</b>, covering teams of <b>5 to 100 users</b>. No per-seat licensing, no usage-based AI billing.</div>
+      <a class="btn btn-primary" href="#">See plan details</a>
+    </div>
+  </section>
+
+  <section class="closing">
+    <h2>See it on your own requirements.</h2>
+    <p class="section-body">
+      The fastest way to evaluate TraceBoard is against a real project — a messy spreadsheet,
+      an existing DOORS export, or a document you're tired of formatting by hand.
+    </p>
+    <div class="cta-row">
+      <a href="#" class="btn btn-primary">Book a walkthrough</a>
+      <a href="#" class="btn btn-secondary">Read our approach to AI</a>
+    </div>
+  </section>
+
+</div>
+
+<footer>TRACEBOARD SUITE — NORDTRACE SOLUTIONS</footer>
+
+</body>
+</html>
