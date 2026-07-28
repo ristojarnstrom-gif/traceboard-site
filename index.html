@@ -1044,7 +1044,7 @@
         <line x1="15.8" y1="7.4" x2="13.8" y2="16" stroke="currentColor" stroke-width="1.5"/>
       </svg>
       <h3>TraceBoard — Plan the work</h3>
-      <p>Requirements, tasks, bugs, and tests linked in one workspace. Kanban boards, baselines, compliance exports, and full traceability — always up to date.</p>
+      <p>Requirements, tasks, bugs, and tests linked in one workspace. Kanban boards, baselines, compliance exports, and full traceability — always up to date. Built-in reporting with custom templates, traceability matrix, coverage reports, and PDF snapshot exports.</p>
     </div>
 
     <div class="pillar">
@@ -1056,7 +1056,7 @@
         <line x1="18" y1="9" x2="18" y2="20" stroke="currentColor" stroke-width="1.5"/>
       </svg>
       <h3>TraceDocs — Document the work</h3>
-      <p>Generate SRS and Test Plan PDFs from baselines. Markdown editor with live preview, folders, and a knowledge base linked to your traceability data.</p>
+      <p>Generate SRS and Test Plan PDFs from baselines. Markdown editor with live preview, folders, and a knowledge base linked to your traceability data. Custom document templates and snapshot PDF exports for audit-ready submissions.</p>
     </div>
 
     <div class="pillar">
@@ -1068,10 +1068,27 @@
         <line x1="15.5" y1="2" x2="15.5" y2="22" stroke="currentColor" stroke-width="1.5"/>
       </svg>
       <h3>TraceTest — Prove the work</h3>
-      <p>Create and execute test runs, record results (Pass/Fail/Blocked), and get coverage reports. Link test results back to requirements — full traceability from spec to evidence.</p>
+      <p>Create and execute test runs, record results (Pass/Fail/Blocked), and get coverage reports. Link test results back to requirements — full traceability from spec to evidence. CI/CD integration creates test runs automatically from commits.</p>
+    </div>
+
+    <div class="pillar">
+      <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M4 4h16v16H4z" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M8 9h8M8 13h6M8 17h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M19 8l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M5 16l-3-3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <h3>Git & CI/CD Integration</h3>
+      <p>Connect your repositories via webhooks or manual sync. Automatic commit linking, branch filtering, private repo support, and a CI/CD API that creates test runs from commits — keeping your traceability data in sync with your code.</p>
     </div>
 
   </div>
+
+  <style>
+    @media (min-width:901px){
+      .pillars-grid{ grid-template-columns:repeat(4, 1fr); }
+    }
+  </style>
 </section>
 
 <!-- ═══════════════════════════════════════════════ -->
@@ -1320,6 +1337,99 @@
 				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
 			  </svg>
 			  <span class="status primary">Compliance grid + PDF exports</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Advanced Reporting</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Not available</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Plugins required</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Custom templates, traceability matrix, test summary, coverage, snapshot PDF</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>Git Integration</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Not available</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Plugins (DevOps)</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Webhooks, manual sync, branch filtering, private repo support</span>
+			</div>
+		  </td>
+		</tr>
+
+		<tr>
+		  <td>CI/CD Integration</td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon no" viewBox="0 0 24 24" fill="none">
+				<path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">Not available</span>
+			</div>
+		  </td>
+
+		  <td>
+			<div class="compare-cell">
+			  <svg class="icon warn" viewBox="0 0 24 24" fill="none">
+				<path d="M12 2l10 18H2L12 2z" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status muted">API required</span>
+			</div>
+		  </td>
+
+		  <td class="col-tb">
+			<div class="compare-cell">
+			  <svg class="icon ok" viewBox="0 0 24 24" fill="none">
+				<path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2"/>
+			  </svg>
+			  <span class="status primary">Test runs from commits via CI/CD API</span>
 			</div>
 		  </td>
 		</tr>
@@ -1625,6 +1735,18 @@
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span>Product switcher to navigate between TraceBoard, TraceDocs, and TraceTest</span>
     </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Advanced reporting — custom templates, traceability matrix, test summary, coverage, snapshot PDF</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Git integration — webhooks, branch filtering, commit linking, private repo support</span>
+    </div>
+    <div class="feature-item">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5L6.5 12L13 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>CI/CD integration — test runs created automatically from commits</span>
+    </div>
 
   </div>
 
@@ -1707,6 +1829,11 @@
   <details>
     <summary>What makes TraceBoard Suite different from Jira?</summary>
     <p>TraceBoard Suite is built specifically for traceability between requirements, tasks and tests — with one‑click baselines and compliance exports. It includes document generation (TraceDocs) and test execution (TraceTest) in the same platform. It's a single Docker Compose stack you own, not a cloud platform you subscribe to. All core traceability features are included in every plan.</p>
+  </details>
+
+  <details>
+    <summary>Does TraceBoard have reporting and Git integration?</summary>
+    <p>Yes. TraceBoard now includes advanced reporting with custom templates, traceability matrices, test summary reports, coverage reports, and PDF snapshot exports — all exportable to Excel, CSV, or PDF. Git integration connects your repositories via webhooks or manual sync, with automatic commit linking, branch filtering, and private repo support. The CI/CD API creates test runs automatically from commits, keeping your traceability data in sync with your code.</p>
   </details>
 
 </section>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Case Study: Propose → Validate → Approve → Commit catches a silent traceability bug — TraceBoard Suite</title>
+<meta name="description" content="How TraceBoard's propose-validate-approve-commit architecture caught a real traceability bug that would have been invisible in a system that auto-commits AI suggestions.">
+<link rel="icon" type="image/png" href="traceboard.png">
+<style>
+  :root{
+    --paper:#f7f7f4;
+    --paper-raised:#ffffff;
+    --ink:#1c2541;
+    --slate:#4f5e6d;
+    --slate-light:#8b97a3;
+    --blue:#2e5fa3;
+    --blue-dark:#1f3f6e;
+    --hairline:#dde2e6;
+    --hairline-strong:#b9c2ca;
+    --amber:#e8833a;
+    --green:#059669;
+    --red:#dc2626;
+    --max-width:760px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+
+  a{ color:var(--blue); }
+  a:hover{ color:var(--blue-dark); }
+
+  /* ---------- Nav ---------- */
+  .nav{
+    height:80px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 24px;
+    border-bottom:1px solid var(--hairline);
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+  }
+  .logo img{
+    height:52px;
+    width:auto;
+    display:block;
+  }
+  .brand-name{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:22px;
+    color:var(--ink);
+    letter-spacing:0.2px;
+  }
+  .nav-links{ display:flex; align-items:center; gap:28px; font-size:14px; }
+  .nav-links a{ color:var(--slate); text-decoration:none; }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links a.active{ color:var(--blue); font-weight:600; }
+
+  /* ---------- Shared bits ---------- */
+  .section-eyebrow{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin:0 0 12px;
+  }
+  .btn{
+    display:inline-block;
+    text-align:center;
+    padding:12px 24px;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:14px;
+    text-decoration:none;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    color:var(--ink);
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .btn:hover{ background:var(--ink); color:var(--paper); }
+  .btn-primary{
+    background:var(--blue);
+    border-color:var(--blue);
+    color:#fff;
+  }
+  .btn-primary:hover{ background:var(--blue-dark); border-color:var(--blue-dark); color:#fff; }
+
+  /* ---------- Page header ---------- */
+  .page-header{
+    padding:72px 24px 32px;
+    text-align:center;
+  }
+  .page-header h1{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:800;
+    font-size:clamp(28px, 4vw, 40px);
+    line-height:1.15;
+    margin:0 0 16px;
+  }
+  .page-header .meta{
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--slate-light);
+  }
+
+  /* ---------- Article content ---------- */
+  .article{
+    max-width:var(--max-width);
+    margin:0 auto;
+    padding:0 24px 64px;
+  }
+  .article .back-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--blue);
+    text-decoration:none;
+    margin-bottom:32px;
+  }
+  .article .back-link:hover{ text-decoration:underline; }
+
+  .article h2{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:24px;
+    margin:40px 0 16px;
+    color:var(--ink);
+  }
+  .article h3{
+    font-family:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    font-weight:700;
+    font-size:18px;
+    margin:32px 0 12px;
+    color:var(--ink);
+  }
+  .article p{
+    color:var(--slate);
+    font-size:16px;
+    line-height:1.7;
+    margin:0 0 18px;
+  }
+  .article blockquote{
+    margin:28px 0;
+    padding:18px 24px;
+    background:var(--paper-raised);
+    border-left:4px solid var(--blue);
+    border-radius:2px;
+    font-size:16px;
+    color:var(--ink);
+    font-style:italic;
+    line-height:1.6;
+  }
+  .article blockquote p{
+    margin:0;
+    color:var(--ink);
+  }
+  .article ul{
+    margin:0 0 18px;
+    padding-left:24px;
+    color:var(--slate);
+    font-size:16px;
+    line-height:1.7;
+  }
+  .article li{ margin-bottom:8px; }
+  .article strong{ color:var(--ink); font-weight:600; }
+  .article em{ font-style:italic; }
+  .article .pull-quote{
+    border-left:4px solid var(--amber);
+    padding:18px 24px;
+    margin:32px 0;
+    background:var(--paper-raised);
+    border-radius:2px;
+    font-size:17px;
+    color:var(--ink);
+    line-height:1.6;
+  }
+  .article .pull-quote p{ margin:0; color:var(--ink); }
+  .article .highlight-box{
+    background:var(--paper-raised);
+    border:1px solid var(--hairline);
+    padding:24px 28px;
+    margin:28px 0;
+    border-radius:4px;
+  }
+  .article .highlight-box h3{ margin-top:0; }
+  .article .highlight-box p:last-child{ margin-bottom:0; }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--hairline);
+    padding:32px 24px;
+    text-align:center;
+    font-family:'Cascadia Code','Fira Code','JetBrains Mono','Consolas',monospace;
+    font-size:13px;
+    color:var(--slate);
+  }
+  footer a{ text-decoration:none; color:var(--slate); }
+  footer a:hover{ color:var(--ink); }
+  .footer-links{ margin-top:8px; }
+  .footer-links a:not(:last-child)::after{ content:'·'; margin:0 10px; color:var(--hairline-strong); }
+
+  @media (max-width:640px){
+    .nav-links{ display:none; }
+    .page-header{ padding:48px 24px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <img src="traceboard.png" alt="TraceBoard" style="height:40px; width:auto; display:block;">
+    <span class="brand-name">TraceBoard</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html#how-it-works">How it works</a>
+    <a href="index.html#capabilities">Features</a>
+    <a href="traceboard-comparison.html">Compare</a>
+    <a href="index.html#deployment">Deployment</a>
+    <a href="index.html#pricing">Pricing</a>
+    <a href="resources.html" class="active">Resources</a>
+    <a href="index.html#faq">FAQ</a>
+  </div>
+</nav>
+
+<header class="page-header">
+  <p class="section-eyebrow">Case Study</p>
+  <h1>How Propose → Validate → Approve → Commit Caught a Silent Traceability Bug</h1>
+  <p class="meta">A real example from our own testing, not a hypothetical.</p>
+</header>
+
+<article class="article">
+  <a class="back-link" href="resources.html">&larr; Back to Resources</a>
+
+  <h2>The setup</h2>
+  <p>We stress-test TraceBoard's AI features against intentionally messy source documents — the kind of inconsistent, half-finished SRS drafts that show up constantly in real engineering teams. One test case was a Software Requirements Specification with a mix of primary requirements, conditional "SHOULD" variants, and response-time constraints, all using a hierarchical ID scheme (e.g., <code>REQ-002</code>, <code>REQ-002a</code>, <code>REQ-002c</code>).</p>
+  <p>We ran the same document through TraceBoard's AI Import and AI Audit Narrative features using two independent LLMs — Mistral Small and DeepSeek — expecting to compare output quality between a smaller and larger model.</p>
+
+  <h2>What we found</h2>
+  <p>The Audit Narrative from both models cited a specific "high severity" finding: a logical contradiction between three requirements, <code>REQ-043</code>, <code>REQ-044</code>, and <code>REQ-045</code>, over database vendor strategy (one requirement mandated vendor independence, another hard-coded PostgreSQL, a third carved out an SQLite exception).</p>
+  <p>At first glance, this looked like a model hallucination — a plausible-sounding but fabricated citation, a known failure mode for LLMs asked to reference specific data points. That's a serious concern for a compliance tool: an audit finding that cites an artifact ID with no real referent is worse than an obviously wrong one, because it looks trustworthy on the surface.</p>
+  <p>But the same three IDs showed up identically across independent runs, on two different models. That consistency was the actual signal. Independent models don't hallucinate identical fabricated IDs by chance — they were both faithfully reporting on something that was really in the database. The bug wasn't in the audit layer at all. It was one step upstream, in the AI Import pipeline.</p>
+
+  <div class="pull-quote">
+    <p>Independent models don't hallucinate identical fabricated IDs by chance — they were both faithfully reporting on something that was really in the database.</p>
+  </div>
+
+  <h2>The real bug</h2>
+  <p>The import tool was flattening hierarchical requirement IDs into a sequential flat list. <code>REQ-002</code>, <code>REQ-002a</code>, and <code>REQ-002c</code> — a primary SHALL requirement, a conditional SHOULD variant, and an unrelated response-time constraint — were being silently renumbered into three new sequential IDs with no relationship to the source document. Repeated across ~30 sections, this produced exactly the kind of clean-looking, higher-numbered IDs (<code>REQ-043</code>, <code>REQ-044</code>, <code>REQ-045</code>) that the Audit Narrative later cited.</p>
+  <p>The consequences of this were quiet but serious:</p>
+  <ul>
+    <li><strong>Traceability was silently broken.</strong> Anyone trying to verify an audit finding against the original SRS would find that <code>REQ-043</code> simply doesn't exist in the source document — a dead end, with no indication that anything had gone wrong.</li>
+    <li><strong>Semantic meaning was lost.</strong> A SHALL requirement, a SHOULD requirement, and a performance constraint — three different requirement types with different compliance weight under ISO 26262 — were collapsed into indistinguishable siblings.</li>
+    <li><strong>The AI Audit layer inherited the error downstream</strong>, faithfully and confidently reporting on data that no longer meant what it appeared to mean.</li>
+  </ul>
+
+  <h2>Why the architecture caught it anyway</h2>
+  <p>This is the scenario our AI architecture is built for. TraceBoard's core principle is that the deterministic engine is fully functional without AI, and the LLM layer only ever proposes — it never commits without explicit human review. Because of that:</p>
+  <ol>
+    <li>The bug lived in the deterministic import stage, not the AI reasoning stage — exactly where it needed to be caught, since that's the layer meant to be reliable and inspectable.</li>
+    <li>Cross-checking two independent models against the same source data surfaced an inconsistency that neither model alone would have revealed.</li>
+    <li>Nothing was silently committed. The renumbered IDs were visible in generated output specifically because the system doesn't auto-approve AI or import output — a human was in the loop to notice the mismatch against the source document.</li>
+  </ol>
+
+  <h2>The fix</h2>
+  <p>We changed the AI Import feature to preserve original source IDs as immutable references rather than silently renumbering, and to flag ambiguous sub-requirement structures (like conditional SHOULD variants layered under a primary SHALL) for human review before import — rather than making a unilateral decision about how to split them.</p>
+  <p>We extended the same transparency principle to the Audit Narrative itself: every section now clearly marks which parts come from the deterministic engine (counts, statuses, links — verifiable, reproducible) and which are LLM-reasoned interpretation (risk narratives, recommendations). And AI-generated Tasks and Tests are now opt-in and clearly labeled as AI-generated, never silently created alongside real project data.</p>
+
+  <h2>The takeaway</h2>
+  <p>We don't present this as a story about an AI model failing. It's the opposite — the audit models did their job correctly, faithfully reporting on the data they were given. The actual defect was upstream, in a deterministic transformation step, and it was invisible until we deliberately tested with independent models and treated their agreement as a signal worth investigating rather than dismissing as coincidence.</p>
+
+  <div class="highlight-box">
+    <h3>That's the case for propose-only AI in regulated engineering workflows</h3>
+    <p>Not that AI won't make mistakes, but that a system designed so nothing commits without a traceable path back to source — and a human checkpoint before it does — turns a silent data-integrity bug into a caught one.</p>
+  </div>
+
+</article>
+
+<footer>
+  <div>TraceBoard Suite — Self‑hosted traceability for engineering teams. © 2026</div>
+  <div class="footer-links">
+    <a href="index.html#privacy">Privacy</a>
+    <a href="index.html#terms">Terms</a>
+    <a href="index.html#contact">Contact</a>
+  </div>
+</footer>
+
+</body>
+</html>
